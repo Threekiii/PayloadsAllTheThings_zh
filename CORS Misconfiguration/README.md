@@ -15,7 +15,7 @@
       - [Vulnerable Implementation - 漏洞实现](#vulnerable-implementation---漏洞实现-1)
       - [Proof of concept - 概念验证](#proof-of-concept---概念验证-1)
     - [Vulnerable Example: XSS on Trusted Origin - 可信Origin的XSS](#vulnerable-example-xss-on-trusted-origin---可信origin的xss)
-    - [Vulnerable Example: Wildcard Origin `*` without Credentials - Origin: * 与 Credentials: true 共用](#vulnerable-example-wildcard-origin--without-credentials---origin--与-credentials-true-共用)
+    - [Vulnerable Example: Wildcard Origin * without Credentials - Origin: * 与 Credentials: true 共用](#vulnerable-example-wildcard-origin--without-credentials---origin--与-credentials-true-共用)
       - [Vulnerable Implementation - 漏洞实现](#vulnerable-implementation---漏洞实现-2)
       - [Proof of concept - 概念验证](#proof-of-concept---概念验证-2)
     - [Vulnerable Example: Expanding the Origin / Regex Issues - 扩展Origin/正则问题](#vulnerable-example-expanding-the-origin--regex-issues---扩展origin正则问题)
@@ -148,7 +148,7 @@ Access-Control-Allow-Credentials: true
 https://trusted-origin.example.com/?xss=<script>CORS-ATTACK-PAYLOAD</script>
 ```
 
-### Vulnerable Example: Wildcard Origin `*` without Credentials - Origin: * 与 Credentials: true 共用
+### Vulnerable Example: Wildcard Origin * without Credentials - Origin: * 与 Credentials: true 共用
 
 如果服务器使用通配符 origin `*` 进行响应，则**浏览器永远不会发送 cookie**。但是，如果服务器不需要进行身份验证，则仍然可以访问服务器上的数据。这一情况可能发生在无法从 Internet 访问的内部服务器上。攻击者的网站可以访问内部网络，并在未经身份验证的情况下访问服务器的数据。
 
